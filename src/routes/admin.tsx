@@ -144,7 +144,7 @@ function useList(table: string) {
   const qc = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ["admin", table],
-    queryFn: async () => (await supabase.from(table).select("*").order("sort_order").order("created_at", { ascending: false })).data ?? [],
+    queryFn: async () => (await (supabase as any).from(table).select("*").order("sort_order").order("created_at", { ascending: false })).data ?? [],
   });
   const invalidate = () => {
     qc.invalidateQueries({ queryKey: ["admin", table] });
@@ -155,8 +155,8 @@ function useList(table: string) {
 
 async function upsertRow(table: string, row: any) {
   const { id, created_at, updated_at, ...rest } = row;
-  if (id) return supabase.from(table).update(rest).eq("id", id);
-  return supabase.from(table).insert(rest);
+  if (id) return (supabase as any).from(table).update(rest).eq("id", id);
+  return (supabase as any).from(table).insert(rest);
 }
 
 /* ---------------- EXPERIENCE ---------------- */

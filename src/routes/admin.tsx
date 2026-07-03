@@ -277,7 +277,7 @@ function RowEditor({
   }
   async function del(id: string) {
     if (!confirm("Delete this?")) return;
-    const { error } = await supabase.from(table).delete().eq("id", id);
+    const { error } = await (supabase as any).from(table).delete().eq("id", id);
     if (error) return toast.error(error.message);
     toast.success("Deleted");
     invalidate();
